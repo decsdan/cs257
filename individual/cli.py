@@ -23,7 +23,7 @@ def get_parsed_arguments():
     
     return parsed_arguments
 
-def parse_time(t):
+def parse_time(t):  
     if ':' in t:
      
         minutes, seconds = t.split(':')
