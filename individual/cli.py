@@ -1,6 +1,6 @@
 import argparse
-import pandas as pd
-
+import csv
+import pprint
 #cli.py, Daniel Scheider, 4/17/2025 - 
 # NAME: cli.py
 # SYNOPSIS: python3 cli.py topAthletes byEvent
@@ -23,6 +23,8 @@ def get_parsed_arguments():
     
     return parsed_arguments
 
+
+
 def parse_time(t):  
     if ':' in t:
      
@@ -34,32 +36,82 @@ def parse_time(t):
 
 
 
+def read_csv_file(file_path):
+   
+    data = []
+    with open(file_path, 'r') as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            data.append(row)
+    return data
+
+
+
+
 def main():
     arguments = get_parsed_arguments()
    
 
-
-    df = pd.read_csv('data/MIAC_data.csv')
-
-    print(df.dtypes)
-    for event in arguments.eventName:
-        
-
-        if event in df['Event'].values:
-            filtered_df = df[df['Event'] == event]
-          
-            sorted_df = filtered_df.sort_values(by="Time", key=lambda col: col.map(parse_time))
+    data = read_csv_file('data/MIAC_data.csv')
+    
+    events = set()
+    dictData = []
+    for row in data: # adds all stored events to a set for uniqueness, and creates a list of dictionaries where athlete info is stored.
+        events.add(row[8])
+        tempDict = { 'Year' : row[1], 
+                    'Meet Date' : row[2],
+                    'Place' : row[3],
+                    'Time' : row[4],
+                    'Meet' : row[5],
+                    'Wind' : row[6],
+                    'Athlete' : row[7],
+                    'Event' : row[8],
+                    'Athletes' : row[9],
+                    'Mark' : row[10],
+                    'Conv' : row[11],
+                    'School' : row[12],
+                    'Category' : row[13],
+                    'Points' : row[14]
             
-            print(event)
+        }
+        dictData.append(tempDict)
+    
+    
+    
+    del(dictData[0]) #deletes column name row
+
+    
+    for event in arguments.eventName: #checks to see if an event is valid
+        if event in events:
+            filtered_data = []
+            for item in dictData:
+                if(item.get("Event") == event):
+                    filtered_data.append(item)
+            
+            filtered_data = sorted(filtered_data, key = lambda x: parse_time(x['Time']))
+            athletes = []
+            times = []
+            for i in range(len(filtered_data)):
+                currAth = filtered_data[i].get("Athlete") 
+                currTime = filtered_data[i].get("Time")
+                if currAth not in athletes: #makes sure that each athlete/time is unique, so multiple PR's from the same person dont countd
+                    athletes.append(currAth)
+                    times.append(currTime)
+                
+                
+                if len(athletes) > 10:
+                    break
+                
+            print("Event: " + event)
             for i in range(10):
+                
                 print(i+1, end=": ") 
-                print(sorted_df.iloc[i]["Athlete"] + ', ' + sorted_df.iloc[i]["Time"])
+                print(athletes[i] + ', ' + times[i])
                 print("*******************************")
         else: 
             print(event + " is an invalid event, please check the csv to see what the properly named events are. Remember to use quotation marks, e,g '100 Meters' ")
-            
-            
+       
+  
     
-
 if __name__ == '__main__':
     main()
