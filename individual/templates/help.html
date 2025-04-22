@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Event API reference</title>
+</head>
+<body>
+    <pre>Track Times API: endpoint reference
+All responses are in JSON
+
+REQUEST: /
+RESPONSE:
+    A greeting from this API to you, with a brief description of this project/future goals
+
+REQUEST: /help
+RESPONSE:
+    This message
+
+REQUEST: /top10/["100_Meters,200_Meters"] *** IMPORTANT ***   USE _ (underscore) for spaces, and use commas to separate values with no underscores or spaces between commas
+RESPONSE:
+    A list of the top 10 times for each event listed. (it shouldn't include duplicate athletes, but some cleaning of the CSV needs to be finished. Right now, there are odd spaces that are messing this up. May fix this before the assignment is in.)
+
+    Event List: {'110 Hurdles', '3000 Steeplechase', '55 Hurdles', '55 Meters', 'Weight Throw', '60 Hurdles', '400 Hurdles', 'Pole Vault', '4 x 200 Relay', '4 x 400 Relay', '500 Meters', '60 Meters', 'Decathlon', '600 Meters', 'Event', '3000 Meters', 'Javelin', '1500 Meters', 'Long Jump', '4 x 100 Relay', 'Triple Jump', '10,000 Meters', 'Sprint Medley Relay', 'Shot Put', 'Pentathlon', '400 Meters', 'Distance Medley Relay', 'Hammer', 'Mile', '800 Meters', '5000 Meters', '1000 Meters', '4 x 800 Relay', '200 Meters', 'Heptathlon', 'Shuttle Hurdle Relay', 'High Jump', '100 Meters', '100 Hurdles', '300 Meters', 'Discus'}
+    </pre>
+</body>
+</html>
+
